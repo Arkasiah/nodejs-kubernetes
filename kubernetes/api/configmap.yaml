@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-configmap
+data:
+  api__hostname: "postgres"
+  api__password: "postgrespassword"
+  api__username: "pgadmin"
+  api__database: "postgres"
+  api__port: "3000"
+  api__dbport: "5432"
+  api__dailect: "postgres"

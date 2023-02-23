@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: api
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: api
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.network/kubernetes-project-default: "true"
+        io.kompose.service: api
+    spec:
+      containers:
+        - env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: api__hostname
+                  name: api-configmap
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: api__password
+                  name: api-configmap
+            - name: DB_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: api__username
+                  name: api-configmap
+            - name: DB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  key: api__database
+                  name: api-configmap
+            - name: DB_DAILECT
+              valueFrom:
+                configMapKeyRef:
+                  key: api__dailect
+                  name: api-configmap
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: api__port
+                  name: api-configmap
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: api__dbport
+                  name: api-configmap
+          image: arkasiah/node-api:1.0
+          name: api
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 200m
+      restartPolicy: Always

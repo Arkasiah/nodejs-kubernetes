@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: postgres
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: postgres
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.network/kubernetes-project-default: "true"
+        io.kompose.service: postgres
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: postgres__database
+                  name: postgres-configmap
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: postgres__password
+                  name: postgres-configmap
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: postgres__username
+                  name: postgres-configmap
+          image: postgres
+          name: postgres
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+              - mountPath: /var/lib/postgresql/data
+                name: postgres-data
+      volumes:
+        - name: postgres-data
+          hostPath:
+              path: /run/desktop/mnt/host/c/Users/Guillaume/Documents/CESI/Kubernetes/data/postgres
+              type: DirectoryOrCreate
+      restartPolicy: Always
