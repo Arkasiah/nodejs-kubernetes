@@ -54,7 +54,7 @@ resource "azurerm_linux_web_app" "web_app" {
   }
 }
 
-/*resource "azurerm_container_group" "api" {
+resource "azurerm_container_group" "api" {
   name                = "api-${var.project_name}${var.environment_suffix}"
   location            = data.azurerm_resource_group.rg-maalsi.location
   resource_group_name = data.azurerm_resource_group.rg-maalsi.name
@@ -63,7 +63,7 @@ resource "azurerm_linux_web_app" "web_app" {
   os_type             = "Linux"
   container {
     name   = "api"
-    image  = "arkasiah/api:1.0"
+    image  = "arkasiah/node-api:1.0"
     cpu    = "0.5"
     memory = "1.5"
 
@@ -74,8 +74,8 @@ resource "azurerm_linux_web_app" "web_app" {
 
     environment_variables = {
       "PORT"        = var.api_port
-      "DB_HOST"     = azurerm_postgresql_server.postgres-server.fqdn
-      "DB_USERNAME" = "${data.azurerm_key_vault_secret.postgres-login.value}@${azurerm_postgresql_server.postgres-server.name}"
+      "DB_HOST"     = azurerm_postgresql_server.postrgres-server.fqdn
+      "DB_USERNAME" = "${data.azurerm_key_vault_secret.postgres-login.value}@${azurerm_postgresql_server.postrgres-server.name}"
       "DB_PASSWORD" = data.azurerm_key_vault_secret.postgres-password.value
       "DB_DATABASE" = var.database_name
       "DB_DAILECT"  = var.database_dialect
@@ -89,7 +89,7 @@ resource "azurerm_linux_web_app" "web_app" {
     }
   }
 }
-
+/*
 resource "azurerm_container_group" "pgadmin" {
   name                = "pgadmin-${var.project_name}${var.environment_suffix}"
   location            = data.azurerm_resource_group.rg-maalsi.location

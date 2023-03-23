@@ -27,3 +27,13 @@ data "azurerm_key_vault_secret" "refresh-token" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "pgadmin-login" {
+  name = "pgadmin-login"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "pgadmin-password" {
+  name = "pgadmin-password"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
